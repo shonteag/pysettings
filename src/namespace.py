@@ -25,7 +25,10 @@ class Namespace(dict):
     """
 
     def __init__(self, obj={}):
-        super(Namespace, self).__init__(obj)
+        super(Namespace, self).__init__()
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                self[k] = v
 
     def __dir__(self):
         return tuple(self)
@@ -39,6 +42,16 @@ class Namespace(dict):
         except KeyError:
             msg = "'%s' object has no attribute '%s'"
             raise AttributeError(msg % (type(self).__name__, name))
+
+    def __setitem__(self, key, value):
+        """
+        hijack dict.__setitem__() to "cast" nested dicts to Namespaces.
+        Use object-recursing to ensure all dicts are stored as Namespaces.
+        """
+        if isinstance(value, dict):
+            new = Namespace(value)
+            value = new
+        super(Namespace, self).__setitem__(key, value)
 
     def __setattr__(self, name, value):
         self[name] = value

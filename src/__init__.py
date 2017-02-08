@@ -71,37 +71,37 @@ def clear_namespace(key):
 	new_namespace(key)
 
 
-# loaders
-def _recurse(level, key, iterable, ns):
-	"""recurse through a dict and create nested namespaces"""
-	if isinstance(iterable, dict):
-		new = Namespace()
-		setattr(ns, key, new)
-		for k, v in iterable.items():
-			# add it to the ns
-			_recurse(level + 1, k, v, new)
-	else:
-		# add to the ns
-		setattr(ns, key, iterable)
+# # loaders
+# def _recurse(level, key, iterable, ns):
+# 	"""recurse through a dict and create nested namespaces"""
+# 	if isinstance(iterable, dict):
+# 		new = Namespace()
+# 		setattr(ns, key, new)
+# 		for k, v in iterable.items():
+# 			# add it to the ns
+# 			_recurse(level + 1, k, v, new)
+# 	else:
+# 		# add to the ns
+# 		setattr(ns, key, iterable)
 
 def loadfrom_yaml(key, path):
 	"""load a yaml file into a top-level namespace"""
 	with open(path, 'r') as f:
 		d = yaml.load(f)
-
 		new_namespace(key)
-		ns = get_namespace(key)
+		
+		# ns = get_namespace(key)
 
-		for key, value in d.items():
-			_recurse(0, key, value, ns)
+		# for key, value in d.items():
+		# 	_recurse(0, key, value, ns)
 
 def loadfrom_json(key, path):
 	"""load a json file into a top-level namespace"""
 	with open(path, 'r') as f:
 		d = json.load(f)
-
 		new_namespace(key)
-		ns = get_namespace(key)
 
-		for key, value in d.items():
-			_recurse(0, key, value, ns)
+		# ns = get_namespace(key)
+
+		# for key, value in d.items():
+		# 	_recurse(0, key, value, ns)
